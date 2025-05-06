@@ -1,0 +1,24 @@
+# /etc/filebeat/filebeat.yml
+
+filebeat.inputs:
+  # 1) Docker container logs (already in place)
+  - type: container
+    enabled: true
+    paths:
+      - /var/lib/docker/containers/*/*.log
+    json.message_key: log
+    json.keys_under_root: true
+    processors:
+      - add_docker_metadata: ~
+
+  # 2) Dynamic-response JSON logs
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/dcd/dynamic_response.log    # adjust if you changed DR_LOG_FILE
+    json.keys_under_root: true
+    json.add_error_key: true
+
+output.logstash:
+  hosts: ["elk_logstash:5044"]
+
