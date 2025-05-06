@@ -1,0 +1,31 @@
+# /etc/systemd/system/dynamic-response.service
+
+# sudo systemctl daemon-reload
+# sudo systemctl enable --now dynamic-response
+
+
+
+[Unit]
+Description=Dynamic Cognitive Honeypot Orchestrator
+After=network-online.target docker.service
+Wants=network-online.target docker.service
+
+[Service]
+Type=simple
+User=student
+WorkingDirectory=/home/student/dcd-unified
+
+# Use your venv’s python if you have one
+ExecStart=/usr/bin/python3 /home/student/dcd-unified/dynamic_response.py
+
+Restart=on-failure
+RestartSec=3
+
+# Give the service user access to needed paths
+ReadWritePaths=/home/student/dcd-unified /var/log/dcd
+
+# If you rely on .env, load it:
+#EnvironmentFile=/home/student/dcd-unified/.env
+
+[Install]
+WantedBy=multi-user.target

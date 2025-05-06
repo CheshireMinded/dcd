@@ -1,0 +1,25 @@
+# PUT IN:
+# /etc/systemd/system/cognitive-deployer.service
+
+# RELOAD AND ENABLE THESE: 
+# sudo systemctl daemon-reload
+# sudo systemctl enable --now cognitive-deployer
+
+[Unit]
+Description=Dynamic Cognitive Honeypot Deployer
+After=network-online.target docker.service
+
+[Service]
+Type=simple
+User=student
+WorkingDirectory=/home/student/dcd-unified
+ExecStart=/usr/bin/python3 /home/student/dcd-unified/cognitive_deployer.py
+Restart=on-failure
+RestartSec=3
+# Environment overrides (if you need remote Docker)
+#Environment=DOCKER_HOST=tcp://192.168.1.10:2376
+#Environment=DOCKER_TLS_VERIFY=1
+#Environment=DOCKER_CERT_PATH=/home/student/.docker/certs
+
+[Install]
+WantedBy=multi-user.target
