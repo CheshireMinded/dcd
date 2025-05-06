@@ -1,0 +1,9 @@
+docker
+requests
+prometheus_client
+fastapi
+uvicorn[standard]
+python-json-logger
+mitreattack-python
+python-dotenv
+psutil       
